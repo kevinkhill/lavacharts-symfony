@@ -1,0 +1,35 @@
+{
+    "name": "khill/symfony-lavacharts",
+    "description": "Symfony Bundle for Lavacharts",
+    "keywords": [
+        "charts",
+        "graphs",
+        "google",
+        "symfony",
+        "lavacharts"
+    ],
+    "homepage": "http://lavacharts.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Hill",
+            "email": "kevinkhill@gmail.com",
+            "role": "Creator"
+        }
+    ],
+    "support": {
+        "docs": "http://lavacharts.com",
+        "email": "kevinkhill@gmail.com",
+        "source": "https://github.com/kevinkhill/laravel-lavacharts",
+        "issues": "https://github.com/kevinkhill/laravel-lavacharts/issues"
+    },
+    "require": {
+        "khill/lavacharts": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Khill\\Lavacharts\\Symfony": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

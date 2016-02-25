@@ -1,4 +1,4 @@
-# Lavacharts Symfony Bundle
+# Symfony Bundle for Lavacharts v3.1
 
 ## Package Features
 - Service locater to retrieve the Lavacharts instance from routes / controllers

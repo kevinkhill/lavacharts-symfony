@@ -2,8 +2,21 @@
 
 namespace Khill\Lavacharts\Symfony\Bundle\Twig;
 
-use Khill\Lavacharts\Lavacharts;
+use \Khill\Lavacharts\Lavacharts;
+use \Khill\Lavacharts\Charts\ChartFactory;
 
+/**
+ * LKavachartsExtension - A PHP wrapper library for the Google Chart API
+ *
+ *
+ * @category  Class
+ * @package   Khill\Lavacharts
+ * @author    Kevin Hill <kevinkhill@gmail.com>
+ * @copyright (c) 2016, KHill Designs
+ * @link      http://github.com/kevinkhill/lavacharts GitHub Repository Page
+ * @link      http://lavacharts.com                   Official Docs Site
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
 class LavachartsExtension extends \Twig_Extension
 {
     /**
@@ -13,35 +26,52 @@ class LavachartsExtension extends \Twig_Extension
      */
     private $lava;
 
-    public function __construct($lava)
+    public function __construct(Lavacharts $lava)
     {
         $this->lava = $lava;
     }
 
+    /**
+     * Get the custom twig functions
+     *
+     * @return array Array of custom twig functions
+     */
     public function getFunctions()
     {
-        $chartClassesProp = new \ReflectionProperty(Lavacharts::class, 'chartClasses');
-        $chartClassesProp->setAccessible(true);
-        $chartClasses = $chartClassesProp->getValue(new Lavacharts);
+        $twigFunctions = $this->getChartFunctions();
 
-        $renderFunctions = [];
+        $twigFunctions[] = new \Twig_SimpleFunction('renderAll', function () {
+            return $this->lava->renderAll();
+        });
 
-        foreach ($chartClasses as $chartClass) {
-            $renderFunctions[] = new \Twig_SimpleFunction(strtolower($chartClass),
-                function($chartLabel, $elemId) use ($chartClass) {
-                    return $this->renderChart($chartClass, $chartLabel, $elemId);
+        return $twigFunctions;
+    }
+
+    /**
+     * Create new twig functions for each chart type.
+     *
+     * @return array Array of chart specific twig functions
+     */
+    private function getChartFunctions()
+    {
+        $functions = [];
+
+        foreach (ChartFactory::getChartTypes() as $chartClass) {
+            $functions[] = new \Twig_SimpleFunction(strtolower($chartClass),
+                function ($chartLabel) use ($chartClass) {
+                    return $this->lava->render($chartClass, $chartLabel);
                 }
             );
         }
 
-        return $renderFunctions;
+        return $functions;
     }
 
-    public function renderChart($chartType, $chartLabel, $elemId)
-    {
-        return $this->lava->render($chartType, $chartLabel, $elemId);
-    }
-
+    /**
+     * Get the name of the Twig extension.
+     *
+     * @return string
+     */
     public function getName()
     {
         return 'lavacharts_twig_extension';

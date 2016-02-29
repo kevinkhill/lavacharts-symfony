@@ -1,26 +1,27 @@
-Installation
-============
+# Symfony Bundle for Lavacharts v3.1
 
-Step 1: Download the Bundle
----------------------------
+## Package Features
+- Service locater to retrieve the Lavacharts instance from routes / controllers
+- Twig template extensions for easier rendering within views
 
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
+## For complete documentation, please visit [lavacharts.com](http://lavacharts.com/)
 
-```bash
-$ composer require khill/lavacharts "~3.0"
+---
+
+## Installing
+
+### Composer
+In your project's main ```composer.json``` file, add this line to the requirements:
+```json
+"khill/lavacharts-symfony": "1.0.*"
 ```
 
-This command requires you to have Composer installed globally, as explained
-in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
-of the Composer documentation.
+```bash
+$ composer update
+```
 
-Step 2: Enable the Bundle
--------------------------
-
-Then, enable the bundle by adding it to the list of registered bundles
-in the `app/AppKernel.php` file of your project:
-
+### Add Bundle
+Add the bundle to the AppKernel:
 ```php
 <?php
 // app/AppKernel.php
@@ -42,30 +43,60 @@ class AppKernel extends Kernel
     // ...
 }
 ```
-
-Step 3: Import the Service
--------------------------
-
-Lastly, import the service by adding the `services.yml` to the imports
-in the `app/config/config.yml` file of your project:
-
-```php
+### Import Config
+Add the service definition to the ```app/config/config.yml``` file
+```yaml
 imports:
-    // ...
-
-    - { resource: "@LavachartsBundle/Resources/config/services.yml" }
-
+  # ...
+  - { resource: @LavachartsBundle/Resources/config/services.yml
 ```
 
-Step 4: Pull from the Container
--------------------------
 
-Now you can use Lavacharts from within your controller:
 
+# Usage
+The creation of charts is separated into two parts:
+First, within a route or controller, you define the chart, the data table, and the customization of the output.
+
+Second, within a view, you use one line and the library will output all the necessary javascript code for you.
+
+## Basic Example
+Here is an example of the simplest chart you can create: A line chart with one dataset and a title, no configuration.
+
+### Controller
 ```php
+    // Get the lavacharts instance from the container
     $lava = $this->get('lavacharts');
 
-    $datatable = $lava->DataTable();
+    $data = $lava->DataTable();
+    $data->addDateColumn('Day of Month')
+         ->addNumberColumn('Projected')
+         ->addNumberColumn('Official');
 
-    // ...
+    // Random Data For Example
+    for ($a = 1; $a < 30; $a++)
+    {
+        $rowData = [
+          "2016-8-$a", rand(800,1000), rand(800,1000)
+        ];
+
+        $data->addRow($rowData);
+    }
+
+    $lava->LineChart('Stocks', $data, [
+      'title' => 'My Awesome Stocks'
+    ])
 ```
+
+## View
+First, pick where the charts will be rendered, into div's with specific IDs
+```html
+<div id="pages-div"></div>
+```
+
+Then, use the twig extensions to render. Each chart has a corresponding twig directive:
+```{{ linechart('Stocks', 'stocks-div')|raw }}```
+
+
+# Changelog
+ - 1.0.0
+  - Initial Package

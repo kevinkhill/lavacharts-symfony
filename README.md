@@ -1,24 +1,14 @@
-# Symfony Bundle for Lavacharts v3.1
+# Symfony Bundle for Lavacharts 3.1
 
 ## Package Features
 - Service locater to retrieve the Lavacharts instance from routes / controllers
 - Twig template extensions for easier rendering within views
 
-## For complete documentation, please visit [lavacharts.com](http://lavacharts.com/)
+#### This extension is included in [Lavacharts](https://github.com/kevinkhill/lavacharts) automatically
 
 ---
 
 ## Installing
-
-### Composer
-In your project's main ```composer.json``` file, add this line to the requirements:
-```json
-"khill/lavacharts-symfony": "1.0.*"
-```
-
-```bash
-$ composer update
-```
 
 ### Add Bundle
 Add the bundle to the AppKernel:
@@ -43,6 +33,7 @@ class AppKernel extends Kernel
     // ...
 }
 ```
+
 ### Import Config
 Add the service definition to the ```app/config/config.yml``` file
 ```yaml
@@ -84,7 +75,7 @@ Here is an example of the simplest chart you can create: A line chart with one d
 
     $lava->LineChart('Stocks', $data, [
       'title' => 'My Awesome Stocks'
-    ])
+    ]);
 ```
 
 ## View
@@ -93,10 +84,10 @@ First, pick where the charts will be rendered, into div's with specific IDs
 <div id="pages-div"></div>
 ```
 
-Then, use the twig extensions to render. Each chart has a corresponding twig directive:
+Then, use the twig extensions to render. Each chart has a corresponding twig directive:  
 ```{{ linechart('Stocks', 'stocks-div')|raw }}```
 
 
 # Changelog
- - 1.0.0
-  - Initial Package
+ - 3.1.0
+  - Initial package import from main Lavacharts Repo

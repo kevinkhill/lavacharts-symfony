@@ -24,7 +24,8 @@
         "issues": "https://github.com/kevinkhill/laravel-lavacharts/issues"
     },
     "require": {
-        "khill/lavacharts": "*"
+        "php": ">=5.4",
+        "khill/lavacharts": "~3"
     },
     "autoload": {
         "psr-4": {
